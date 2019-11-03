@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Teknotra</string>
+    <string name="open_drawer">Menüyü Aç</string>
+    <string name="close_drawer">Menüyü Kapat</string>
 </resources>
