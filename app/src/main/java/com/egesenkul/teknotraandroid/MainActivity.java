@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_all);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,
                 R.string.open_drawer,R.string.close_drawer);
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
+            case R.id.nav_all:
+                Toast.makeText(getApplicationContext(), "Hepsi", Toast.LENGTH_LONG).show();
+                break;
             case R.id.nav_car:
                 Toast.makeText(getApplicationContext(), "Araba", Toast.LENGTH_LONG).show();
                 break;
