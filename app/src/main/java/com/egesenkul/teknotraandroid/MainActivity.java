@@ -1,5 +1,7 @@
 package com.egesenkul.teknotraandroid;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -84,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_computer:
                 Toast.makeText(getApplicationContext(), "Bilgisayar", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.web:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.teknotra.com"));
+                startActivity(browserIntent);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
