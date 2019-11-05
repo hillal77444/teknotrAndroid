@@ -33,9 +33,6 @@
         </menu>
     </item>
 
-    <item android:id="@+id/share"
-        android:icon="@drawable/ic_share"
-        android:title="Paylaş"/>
     <item android:id="@+id/web"
         android:icon="@drawable/ic_web"
         android:title="Siteye Git"/>
