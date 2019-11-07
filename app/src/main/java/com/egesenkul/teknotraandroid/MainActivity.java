@@ -12,8 +12,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void Initialization() {
+        ListView listView = (ListView)findViewById(R.id.ListView);
+        CustomAdapter customAdapter = new CustomAdapter();
+        listView.setAdapter(customAdapter);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -94,5 +104,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    class CustomAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return 23;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = getLayoutInflater().inflate(R.layout.customlayout,null);
+
+            ImageView imageView = (ImageView)convertView.findViewById(R.id.imageView);
+            TextView baslik = (TextView)convertView.findViewById(R.id.textView_baslik);
+            TextView tarih = (TextView)convertView.findViewById(R.id.textView_tarih);
+
+            baslik.setText("BAŞLIK "+ (position+1));
+            tarih.setText("TARİH "+ (position+1));
+
+            return convertView;
+        }
     }
 }
