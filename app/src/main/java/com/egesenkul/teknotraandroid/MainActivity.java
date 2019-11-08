@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ListView listView = (ListView)findViewById(R.id.ListView);
         CustomAdapter customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListeTiklama(position);
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
     }
 
+    private void ListeTiklama(int index){
+        Toast.makeText(getApplicationContext(), "Tıklanan eleman " + (index+1) + ". eleman", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onBackPressed() {
