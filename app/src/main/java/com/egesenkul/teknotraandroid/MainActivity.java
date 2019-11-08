@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +48,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                listeyiYenile(); 
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.open_drawer,R.string.close_drawer);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void listeyiYenile() {
+        Toast.makeText(getApplicationContext(), "Listeyi yenile fonksiyonu çalıştı", Toast.LENGTH_LONG).show();
     }
 
     private void ListeTiklama(int index){
