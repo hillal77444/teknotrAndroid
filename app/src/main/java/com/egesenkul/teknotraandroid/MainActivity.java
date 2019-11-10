@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                listeyiYenile(); 
+                listeyiYenile();
                 pullToRefresh.setRefreshing(false);
             }
         });
