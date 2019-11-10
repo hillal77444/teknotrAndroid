@@ -24,6 +24,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -34,7 +39,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listeOlusturma();
         Initialization();
+    }
+
+    private void listeOlusturma() {
+
+        String mevcutTarih = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String mevcutSaat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        ArrayList<yaziBaslik> yaziBasliklari = new ArrayList<yaziBaslik>();
+
+        for (int i=1;i<=20;i++){
+            yaziBasliklari.add(new yaziBaslik("YAZI "+i,mevcutTarih+" "+mevcutSaat,"url"));
+        }
+
     }
 
     private void Initialization() {

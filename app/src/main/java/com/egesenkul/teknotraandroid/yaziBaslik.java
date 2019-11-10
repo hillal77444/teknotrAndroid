@@ -5,10 +5,10 @@ import java.util.Date;
 public class yaziBaslik {
 
     private String baslik;
-    private Date tarih;
+    private String tarih;
     private String resimAdresi;
 
-    public yaziBaslik(String title,Date createDate,String urlImage){
+    public yaziBaslik(String title,String createDate,String urlImage){
         baslik = title;
         tarih = createDate;
         resimAdresi = urlImage;
@@ -22,11 +22,11 @@ public class yaziBaslik {
         this.baslik = baslik;
     }
 
-    public Date getTarih() {
+    public String getTarih() {
         return tarih;
     }
 
-    public void setTarih(Date tarih) {
+    public void setTarih(String tarih) {
         this.tarih = tarih;
     }
 
