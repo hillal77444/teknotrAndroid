@@ -8,6 +8,12 @@ public class yaziBaslik {
     private Date tarih;
     private String resimAdresi;
 
+    public yaziBaslik(String title,Date createDate,String urlImage){
+        baslik = title;
+        tarih = createDate;
+        resimAdresi = urlImage;
+    }
+
     public String getBaslik() {
         return baslik;
     }
