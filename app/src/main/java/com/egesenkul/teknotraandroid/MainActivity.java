@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<yaziBaslik> yazilar;
     int ddIndex;
     CustomAdapter customAdapter;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         tamEkranYap();
@@ -53,13 +54,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Initialization();
 
-        tumYazilariAl();
+        tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts");
     }
 
-    private void tumYazilariAl() {
+    private void tumYazilariAl(String url) {
         try{
+            ddIndex = 0;
+            yazilar = new ArrayList<>();
+            yazilar.clear();
+            customAdapter.notifyDataSetChanged();
             final RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET,"https://teknotra.com/wp-json/wp/v2/posts",
+            StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -87,6 +92,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void ResimleriAl() {
             try{
                 final RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                if((int)dd.get(ddIndex).getFeatured_media() == 0){
+                    yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),"-1");
+                    yazilar.add(temp);
+                    ddIndex++;
+                    if(ddIndex < dd.size()-1)
+                        ResimleriAl();
+                    else
+                        return;
+                }
                 StringRequest stringRequest = new StringRequest(Request.Method.GET,"https://teknotra.com/wp-json/wp/v2/media/"+ ((int)dd.get(ddIndex).getFeatured_media()),
                         new Response.Listener<String>() {
                             @Override
@@ -98,13 +112,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),image.getSource_url());
                                 yazilar.add(temp);
                                 queue.stop();
-                                if(ddIndex<dd.size()){
+                                if(ddIndex<dd.size()-1){
                                     ddIndex++;
                                     ResimleriAl();
                                 }
                                 else{
                                     Log.e("OK","liste tamam "+yazilar.size());
                                     customAdapter.notifyDataSetChanged();
+                                    return;
                                 }
                             }
 
@@ -139,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                yazilar = new ArrayList<yaziBaslik>();
+                yazilar.clear();
+                customAdapter.notifyDataSetChanged();
                 listeyiYenile();
                 pullToRefresh.setRefreshing(false);
             }
@@ -148,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_all);
 
@@ -159,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void listeyiYenile() {
-        tumYazilariAl();
+        onNavigationItemSelected(navigationView.getCheckedItem());
     }
 
     private void ListeTiklama(int index){
@@ -185,28 +203,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.nav_all:
-                Toast.makeText(getApplicationContext(), "Hepsi", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts");
                 break;
             case R.id.nav_car:
-                Toast.makeText(getApplicationContext(), "Araba", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=14");
                 break;
             case R.id.nav_mobile:
-                Toast.makeText(getApplicationContext(), "Mobil", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=7");
                 break;
             case R.id.software_development:
-                Toast.makeText(getApplicationContext(), "Yazılım Geliştirme", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=4");
                 break;
             case R.id.social_media:
-                Toast.makeText(getApplicationContext(), "Sosyal Medya", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=9");
                 break;
             case R.id.game:
-                Toast.makeText(getApplicationContext(), "Oyun", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=117");
                 break;
             case R.id.other:
-                Toast.makeText(getApplicationContext(), "Diğer", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=11");
                 break;
             case R.id.nav_computer:
-                Toast.makeText(getApplicationContext(), "Bilgisayar", Toast.LENGTH_LONG).show();
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=150");
                 break;
             case R.id.web:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.teknotra.com"));
@@ -271,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             baslik.setText(SlugToTitle(yazilar.get(position).getBaslik()));
             tarih.setText(TarihFormatiniDuzenle(yazilar.get(position).getTarih()));
 
-            Picasso.get().load(yazilar.get(position).getResimAdresi()).into(imageView);
+            if(yazilar.get(position).getResimAdresi() != "-1")
+                Picasso.get().load(yazilar.get(position).getResimAdresi()).into(imageView);
 
             return convertView;
         }
