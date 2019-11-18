@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int ddIndex;
     CustomAdapter customAdapter;
     NavigationView navigationView;
+    boolean yeniYaziEkleniyor;
+    int yaziSayfasi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         tamEkranYap();
@@ -54,17 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Initialization();
 
-        tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts");
+        tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
     }
 
     private void tumYazilariAl(String url) {
         try{
             ddIndex = 0;
-            yazilar = new ArrayList<>();
-            yazilar.clear();
-            customAdapter.notifyDataSetChanged();
             final RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            StringRequest stringRequest = new StringRequest(Request.Method.GET,url,
+            StringRequest stringRequest = new StringRequest(Request.Method.GET,url+yaziSayfasi,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 else{
                                     Log.e("OK","liste tamam "+yazilar.size());
                                     customAdapter.notifyDataSetChanged();
+                                    yeniYaziEkleniyor = false;
                                     return;
                                 }
                             }
@@ -134,11 +136,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             catch (Exception ex){
                 Log.e("error",ex.getMessage());
                 customAdapter.notifyDataSetChanged();
+                yeniYaziEkleniyor = false;
             }
     }
 
     private void Initialization() {
         ddIndex=0;
+        yaziSayfasi = 1;
+        yeniYaziEkleniyor = false;
         yazilar = new ArrayList<yaziBaslik>();
         ListView listView = (ListView)findViewById(R.id.ListView);
         customAdapter = new CustomAdapter();
@@ -159,6 +164,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 customAdapter.notifyDataSetChanged();
                 listeyiYenile();
                 pullToRefresh.setRefreshing(false);
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if(view.getLastVisiblePosition() == yazilar.size()-1 && yazilar != null && yazilar.size() != 0
+                && !yeniYaziEkleniyor){
+                    yeniYaziEkleniyor = true;
+                    yaziSayfasi++;
+                    yaziEkle(navigationView.getCheckedItem());
+                }
             }
         });
 
@@ -199,32 +221,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+    public void yaziEkle(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.nav_all:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
                 break;
             case R.id.nav_car:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=14");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=14&page=");
                 break;
             case R.id.nav_mobile:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=7");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=7&page=");
                 break;
             case R.id.software_development:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=4");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=4&page=");
                 break;
             case R.id.social_media:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=9");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=9&page=");
                 break;
             case R.id.game:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=117");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=117&page=");
                 break;
             case R.id.other:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=11");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=11&page=");
                 break;
             case R.id.nav_computer:
-                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=150");
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=150&page=");
+                break;
+            case R.id.web:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.teknotra.com"));
+                startActivity(browserIntent);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        yaziSayfasi = 1;
+        yazilar = new ArrayList<yaziBaslik>();
+        yazilar.clear();
+        customAdapter.notifyDataSetChanged();
+        switch (menuItem.getItemId()){
+            case R.id.nav_all:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
+                break;
+            case R.id.nav_car:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=14&page=");
+                break;
+            case R.id.nav_mobile:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=7&page=");
+                break;
+            case R.id.software_development:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=4&page=");
+                break;
+            case R.id.social_media:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=9&page=");
+                break;
+            case R.id.game:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=117&page=");
+                break;
+            case R.id.other:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=11&page=");
+                break;
+            case R.id.nav_computer:
+                tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?categories=150&page=");
                 break;
             case R.id.web:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.teknotra.com"));
