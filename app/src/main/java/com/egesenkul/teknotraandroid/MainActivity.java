@@ -1,6 +1,7 @@
 package com.egesenkul.teknotraandroid;
 
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -38,6 +39,8 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     boolean yeniYaziEkleniyor;
     int yaziSayfasi;
+
+    GifImageView splashLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 else{
                                     Log.e("OK","liste tamam "+yazilar.size());
                                     customAdapter.notifyDataSetChanged();
+                                    splashLogo.setVisibility(View.GONE);
                                     yeniYaziEkleniyor = false;
                                     return;
                                 }
@@ -136,11 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             catch (Exception ex){
                 Log.e("error",ex.getMessage());
                 customAdapter.notifyDataSetChanged();
+                splashLogo.setVisibility(View.GONE);
                 yeniYaziEkleniyor = false;
             }
     }
 
     private void Initialization() {
+        splashLogo = (GifImageView)findViewById(R.id.imageView2);
         ddIndex=0;
         yaziSayfasi = 1;
         yeniYaziEkleniyor = false;
@@ -162,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 yazilar = new ArrayList<yaziBaslik>();
                 yazilar.clear();
                 customAdapter.notifyDataSetChanged();
+                splashLogo.setVisibility(View.VISIBLE);
                 listeyiYenile();
                 pullToRefresh.setRefreshing(false);
             }
@@ -260,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         yazilar = new ArrayList<yaziBaslik>();
         yazilar.clear();
         customAdapter.notifyDataSetChanged();
+        splashLogo.setVisibility(View.VISIBLE);
         switch (menuItem.getItemId()){
             case R.id.nav_all:
                 tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
