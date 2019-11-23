@@ -1,7 +1,6 @@
 package com.egesenkul.teknotraandroid;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,8 +15,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -52,12 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     boolean yeniYaziEkleniyor;
     int yaziSayfasi;
+    ListView listView;
 
     GifImageView splashLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        tamEkranYap();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -126,6 +123,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     Log.e("OK","liste tamam "+yazilar.size());
                                     customAdapter.notifyDataSetChanged();
                                     splashLogo.setVisibility(View.GONE);
+                                    if(listView.getVisibility() == View.GONE){
+                                        listView.setVisibility(View.VISIBLE);
+                                    }
                                     yeniYaziEkleniyor = false;
                                     return;
                                 }
@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.e("error",ex.getMessage());
                 customAdapter.notifyDataSetChanged();
                 splashLogo.setVisibility(View.GONE);
+                if(listView.getVisibility() == View.GONE){
+                    listView.setVisibility(View.VISIBLE);
+                }
                 yeniYaziEkleniyor = false;
             }
     }
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         yaziSayfasi = 1;
         yeniYaziEkleniyor = false;
         yazilar = new ArrayList<yaziBaslik>();
-        ListView listView = (ListView)findViewById(R.id.ListView);
+        listView = (ListView)findViewById(R.id.ListView);
         customAdapter = new CustomAdapter();
         listView.setAdapter(customAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -186,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(view.getLastVisiblePosition() == yazilar.size()-1 && yazilar != null && yazilar.size() != 0
                 && !yeniYaziEkleniyor){
+                    listView.setVisibility(View.GONE);
+                    splashLogo.setVisibility(View.VISIBLE);
                     yeniYaziEkleniyor = true;
                     yaziSayfasi++;
                     yaziEkle(navigationView.getCheckedItem());
@@ -212,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void ListeTiklama(int index){
+        Intent intent = new Intent(MainActivity.this,yaziEkrani.class);
+        intent.putExtra("id", ((int)(dd.get(index).getId()))+"");
+        intent.putExtra("featured_media",((int)dd.get(index).getFeatured_media())+"");
+        startActivity(intent);
         Toast.makeText(getApplicationContext(), "Tıklanan eleman " + (index+1) + ". eleman", Toast.LENGTH_LONG).show();
     }
 
@@ -223,11 +232,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else{
             super.onBackPressed();
         }
-    }
-
-    protected void tamEkranYap(){
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     }
 
     public void yaziEkle(MenuItem menuItem){
