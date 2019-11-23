@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.android.volley.Request;
@@ -12,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,6 +28,7 @@ public class yaziEkrani extends AppCompatActivity {
     WordpressApi dd;
     String feature_media_id;
     WordpressimageApi featuredMedia;
+    FloatingActionButton floatingActionButton;
 
     String rendered;
 
@@ -42,6 +45,20 @@ public class yaziEkrani extends AppCompatActivity {
         yaziIcerik = (WebView) findViewById(R.id.yaziHTML);
 
         yaziIcerikAl(yaziID);
+
+        floatingActionButton = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Bu yazıyı okumanı tavsiye ediyorum " + dd.getLink();
+                String shareSub = "TEKNOTRA";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            }
+        });
     }
 
     private void yaziIcerikAl(String id) {
