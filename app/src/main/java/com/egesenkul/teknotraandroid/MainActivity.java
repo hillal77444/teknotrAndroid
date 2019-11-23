@@ -2,15 +2,19 @@ package com.egesenkul.teknotraandroid;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int yaziSayfasi;
     ListView listView;
 
+    private AdView adView;
     GifImageView splashLogo;
 
     @Override
@@ -59,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         Initialization();
+
+        MobileAds.initialize(this,"ca-app-pub-8924915962354588~2158487187");
+        adView = (AdView)findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
     }
@@ -221,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra("id", ((int)(dd.get(index).getId()))+"");
         intent.putExtra("featured_media",((int)dd.get(index).getFeatured_media())+"");
         startActivity(intent);
-        Toast.makeText(getApplicationContext(), "Tıklanan eleman " + (index+1) + ". eleman", Toast.LENGTH_LONG).show();
     }
 
     @Override
