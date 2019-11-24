@@ -14,8 +14,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.View;
@@ -37,7 +35,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.view.Menu;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -47,6 +44,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Type;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -70,6 +68,22 @@ public class mainMenu extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        if(!InternetBaglantisiVarMi()){
+            new AlertDialog.Builder(this)
+                    .setTitle("İnternet Yok")
+                    .setMessage("İnternet bağlantısı olmadığından dolayı uygulama kapanacaktır")
+                    .setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+
+                    })
+                    .show();
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -89,6 +103,16 @@ public class mainMenu extends AppCompatActivity
 
         tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
     }
+
+    private boolean InternetBaglantisiVarMi(){
+            try {
+        InetAddress ipAddr = InetAddress.getByName("teknotra.com");
+        return !ipAddr.equals("");
+
+    } catch (Exception e) {
+        return false;
+    }
+}
 
     private void Initialization() {
         splashLogo = (GifImageView)findViewById(R.id.imageView2);
