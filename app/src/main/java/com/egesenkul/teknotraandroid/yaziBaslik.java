@@ -7,11 +7,15 @@ public class yaziBaslik {
     private String baslik;
     private String tarih;
     private String resimAdresi;
+    private String Id;
+    private float featured_media;
 
-    public yaziBaslik(String title,String createDate,String urlImage){
+    public yaziBaslik(String title,String createDate,String urlImage,String id,float fM){
         baslik = title;
         tarih = createDate;
         resimAdresi = urlImage;
+        Id = id;
+        featured_media = fM;
     }
 
     public String getBaslik() {
@@ -36,6 +40,22 @@ public class yaziBaslik {
 
     public void setResimAdresi(String resimAdresi) {
         this.resimAdresi = resimAdresi;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public float getFeatured_media() {
+        return featured_media;
+    }
+
+    public void setFeatured_media(float featured_media) {
+        this.featured_media = featured_media;
     }
 }
 

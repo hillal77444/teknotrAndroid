@@ -171,7 +171,8 @@ public class mainMenu extends AppCompatActivity
         try{
             final RequestQueue queue = Volley.newRequestQueue(mainMenu.this);
             if((int)dd.get(ddIndex).getFeatured_media() == 0){
-                yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),"-1");
+                yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),"-1",
+                        dd.get(ddIndex).getId()+"",dd.get(ddIndex).getFeatured_media());
                 yazilar.add(temp);
                 ddIndex++;
                 if(ddIndex < dd.size()-1)
@@ -187,7 +188,8 @@ public class mainMenu extends AppCompatActivity
                             Type listType = new TypeToken<WordpressimageApi>() {
                             }.getType();
                             image = gson.fromJson(response, listType);
-                            yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),image.getSource_url());
+                            yaziBaslik temp = new yaziBaslik(dd.get(ddIndex).getSlug().replace("-"," "),dd.get(ddIndex).getDate(),image.getSource_url(),
+                                    dd.get(ddIndex).getId()+"",dd.get(ddIndex).getFeatured_media());
                             yazilar.add(temp);
                             queue.stop();
                             if(ddIndex<dd.size()-1){
@@ -264,8 +266,9 @@ public class mainMenu extends AppCompatActivity
 
     private void ListeTiklama(int index){
         Intent intent = new Intent(mainMenu.this,yaziEkrani.class);
-        intent.putExtra("id", ((int)(dd.get(index).getId()))+"");
-        intent.putExtra("featured_media",((int)dd.get(index).getFeatured_media())+"");
+        int index2 = Integer.parseInt(yazilar.get(index).getId().substring(0,yazilar.get(index).getId().length()-2));
+        intent.putExtra("id", index2+"");
+        intent.putExtra("featured_media",((int)yazilar.get(index).getFeatured_media())+"");
         startActivity(intent);
     }
 
