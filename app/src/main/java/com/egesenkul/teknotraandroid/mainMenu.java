@@ -43,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -69,7 +70,35 @@ public class mainMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        if(!InternetBaglantisiVarMi()){
+        try {
+            if(!InternetBaglantisiVarMi()){
+                new AlertDialog.Builder(this)
+                        .setTitle("İnternet Yok")
+                        .setMessage("İnternet bağlantısı olmadığından dolayı uygulama kapanacaktır")
+                        .setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+
+                        })
+                        .show();
+            }
+        } catch (InterruptedException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("İnternet Yok")
+                    .setMessage("İnternet bağlantısı olmadığından dolayı uygulama kapanacaktır")
+                    .setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+
+                    })
+                    .show();
+        } catch (IOException e) {
             new AlertDialog.Builder(this)
                     .setTitle("İnternet Yok")
                     .setMessage("İnternet bağlantısı olmadığından dolayı uygulama kapanacaktır")
@@ -104,15 +133,11 @@ public class mainMenu extends AppCompatActivity
         tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
     }
 
-    private boolean InternetBaglantisiVarMi(){
-            try {
-        InetAddress ipAddr = InetAddress.getByName("teknotra.com");
-        return !ipAddr.equals("");
+    private boolean InternetBaglantisiVarMi() throws InterruptedException, IOException {
+            final String command = "ping -c 1 google.com";
+            return Runtime.getRuntime().exec(command).waitFor() == 0;
+        }
 
-    } catch (Exception e) {
-        return false;
-    }
-}
 
     private void Initialization() {
         splashLogo = (GifImageView)findViewById(R.id.imageView2);
