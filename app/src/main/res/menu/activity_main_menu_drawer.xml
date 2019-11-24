@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_all"
+            android:icon="@drawable/ic_all"
+            android:title="Tüm Yazılar"/>
+        <item android:id="@+id/nav_mobile"
+            android:icon="@drawable/ic_mobile"
+            android:title="Mobil"/>
+        <item android:id="@+id/nav_computer"
+            android:icon="@drawable/ic_computer"
+            android:title="Bilgisayar"/>
+        <item android:id="@+id/nav_car"
+            android:icon="@drawable/ic_car"
+            android:title="Araba"/>
+        <item android:id="@+id/other"
+            android:icon="@drawable/ic_other"
+            android:title="Diğer"/>
+        <item android:id="@+id/game"
+            android:icon="@drawable/ic_game"
+            android:title="Oyun"/>
+        <item android:id="@+id/software_development"
+            android:icon="@drawable/ic_software_development"
+            android:title="Yazılım Geliştirme"/>
+        <item android:id="@+id/social_media"
+            android:icon="@drawable/ic_social_media"
+            android:title="Sosyal Medya"/>
+    </group>
+
+    <item android:title="Web">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Uygulamayı Paylaş" />
+            <item
+                android:id="@+id/web"
+                android:icon="@drawable/ic_web"
+                android:title="Web Siteye Git" />
+        </menu>
+    </item>
+
+</menu>
