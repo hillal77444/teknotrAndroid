@@ -80,10 +80,12 @@ public class yaziEkrani extends AppCompatActivity {
                             }
                             try {
                                 JSONObject sys  = reader.getJSONObject("content");
+                                JSONObject title = reader.getJSONObject("title");
+                                rendered += "<center> <b>" + (title.getString("rendered"))+"</b> </center>";
                                 if(!sys.getString("rendered").contains(".jpg")){
                                     GetFeaturedMedia();
                                 }
-                                rendered = sys.getString("rendered");
+                                rendered += sys.getString("rendered");
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     yaziIcerik.loadData(rendered,"text/html", "UTF-8");

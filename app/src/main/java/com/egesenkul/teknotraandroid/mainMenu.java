@@ -212,7 +212,7 @@ public class mainMenu extends AppCompatActivity
             queue.add(stringRequest);
         }
         catch (Exception ex){
-
+            yaziEkle(navigationView.getCheckedItem());
         }
     }
 
