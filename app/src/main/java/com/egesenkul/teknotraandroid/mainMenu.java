@@ -302,6 +302,12 @@ public class mainMenu extends AppCompatActivity
         yazilar.clear();
         customAdapter.notifyDataSetChanged();
         splashLogo.setVisibility(View.VISIBLE);
+        if (item.getTitle().equals("Tüm Yazılar")){
+            mainMenu.this.setTitle("TEKNOTRA");
+        }
+        else{
+            mainMenu.this.setTitle(item.getTitle());
+        }
         switch (item.getItemId()){
             case R.id.nav_all:
                 tumYazilariAl("https://teknotra.com/wp-json/wp/v2/posts?page=");
