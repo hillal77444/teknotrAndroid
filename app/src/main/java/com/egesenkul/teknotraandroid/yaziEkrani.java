@@ -1,8 +1,11 @@
 package com.egesenkul.teknotraandroid;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.TooltipCompat;
+
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -29,6 +32,7 @@ public class yaziEkrani extends AppCompatActivity {
     String feature_media_id;
     WordpressimageApi featuredMedia;
     FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButton2;
 
     String rendered;
 
@@ -59,6 +63,10 @@ public class yaziEkrani extends AppCompatActivity {
                 startActivity(Intent.createChooser(sharingIntent, "Share using"));
             }
         });
+        TooltipCompat.setTooltipText(floatingActionButton, "Yazıyı Paylaş");
+
+        floatingActionButton2 = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
+
     }
 
     private void yaziIcerikAl(String id) {
@@ -72,6 +80,14 @@ public class yaziEkrani extends AppCompatActivity {
                             Type listType = new TypeToken<WordpressApi>() {
                             }.getType();
                             dd = gson.fromJson(response, listType);
+                            floatingActionButton2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dd.getLink()));
+                                    startActivity(browserIntent);
+                                }
+                            });
+                            TooltipCompat.setTooltipText(floatingActionButton2, "İlgili Sayfaya Git");
                             JSONObject reader = null;
                             try {
                                 reader = new JSONObject(response);
