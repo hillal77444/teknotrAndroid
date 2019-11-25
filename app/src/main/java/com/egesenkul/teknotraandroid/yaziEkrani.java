@@ -8,6 +8,7 @@ import androidx.appcompat.widget.TooltipCompat;
 
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.android.volley.Request;
@@ -47,6 +48,8 @@ public class yaziEkrani extends AppCompatActivity {
 
         rendered = "";
         yaziIcerik = (WebView) findViewById(R.id.yaziHTML);
+        WebSettings webSettings = yaziIcerik.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
         yaziIcerikAl(yaziID);
 
