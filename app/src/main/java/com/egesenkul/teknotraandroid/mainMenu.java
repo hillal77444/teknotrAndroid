@@ -176,7 +176,6 @@ public class mainMenu extends AppCompatActivity
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(view.getLastVisiblePosition() == yazilar.size()-1 && yazilar != null && yazilar.size() != 0
                         && !yeniYaziEkleniyor){
-                    listView.setVisibility(View.GONE);
                     splashLogo.setVisibility(View.VISIBLE);
                     yeniYaziEkleniyor = true;
                     yaziSayfasi++;
@@ -249,9 +248,6 @@ public class mainMenu extends AppCompatActivity
                                 Log.e("OK","liste tamam "+yazilar.size());
                                 customAdapter.notifyDataSetChanged();
                                 splashLogo.setVisibility(View.GONE);
-                                if(listView.getVisibility() == View.GONE){
-                                    listView.setVisibility(View.VISIBLE);
-                                }
                                 yeniYaziEkleniyor = false;
                                 return;
                             }
@@ -269,9 +265,6 @@ public class mainMenu extends AppCompatActivity
             Log.e("error",ex.getMessage());
             customAdapter.notifyDataSetChanged();
             splashLogo.setVisibility(View.GONE);
-            if(listView.getVisibility() == View.GONE){
-                listView.setVisibility(View.VISIBLE);
-            }
             yeniYaziEkleniyor = false;
         }
     }

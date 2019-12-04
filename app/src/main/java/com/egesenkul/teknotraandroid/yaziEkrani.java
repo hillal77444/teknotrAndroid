@@ -50,6 +50,8 @@ public class yaziEkrani extends AppCompatActivity {
         yaziIcerik = (WebView) findViewById(R.id.yaziHTML);
         WebSettings webSettings = yaziIcerik.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        yaziIcerik.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
 
         yaziIcerikAl(yaziID);
 
@@ -70,7 +72,10 @@ public class yaziEkrani extends AppCompatActivity {
 
         floatingActionButton2 = (FloatingActionButton)findViewById(R.id.floatingActionButton3);
 
+        this.setTitle("Yazı İçeriği");
     }
+
+
 
     private void yaziIcerikAl(String id) {
         try{
@@ -105,6 +110,7 @@ public class yaziEkrani extends AppCompatActivity {
                                     GetFeaturedMedia();
                                 }
                                 rendered += sys.getString("rendered");
+                                rendered +="<br/><br/>";
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     yaziIcerik.loadData(rendered,"text/html", "UTF-8");
@@ -143,7 +149,7 @@ public class yaziEkrani extends AppCompatActivity {
                             featuredMedia = gson.fromJson(response, listType);
 
                             yaziIcerik.loadData("<img style='height: auto; width: 100%; object-fit: contain'" +
-                                    " src='"+featuredMedia.getSource_url()+"'/>" + rendered,"text/html", "UTF-8");
+                                    " src='"+featuredMedia.getSource_url()+"'/>" + rendered +"<br/>","text/html", "UTF-8");
                             queue.stop();
                         }
 

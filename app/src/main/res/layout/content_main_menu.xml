@@ -8,13 +8,8 @@
     tools:context=".mainMenu"
     tools:showIn="@layout/app_bar_main_menu">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/teknotra_logo" />
-
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -22,11 +17,13 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/pullToRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ListView
                     android:id="@+id/ListView"
                     android:layout_width="match_parent"
@@ -43,9 +40,21 @@
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         android:visibility="visible"
         app:adSize="BANNER"
         app:adUnitId="ca-app-pub-8924915962354588/7107561533"
-        tools:layout_editor_absoluteY="16dp"></com.google.android.gms.ads.AdView>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/imageView2"
+        android:layout_width="117dp"
+        android:layout_height="117dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/teknotra_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/adView"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
